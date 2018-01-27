@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+<!-- Main content start from here-->
+{% block content %}       
+    <div class="row">
+        <h2>Rows: {{contentRow}} </h2>
+        <h2>Columns: {{contentCol}} </h2>
+        <h2> {{product_list[2].name}} </h2>
+        {% for product in product_list %}
+            <a href=" {% url 'products:detail' slug=product.slug %} ">
+                <!-- Note the way to get slug and put in the page -->
+                <div class="col-md-6">                    
+                    <h3>{{ product.name|safe }}</h3>                                
+                    <div class="row">                   
+                        <div class="col-sm-6">
+                            <h4>Price: {{product.currentPrice|safe}}</h4>
+                            <h4>Save: {{product.savePrice|safe}}</h4> 
+                            <h3>Shop now</h3>                           
+                        </div>
+                        <div class="col-sm-6">                        
+                            {% with 'media/'|add:product.imagePath.name as imgPath %}                          
+                            <img src="{% static imgPath %}" class="img-responsive center-block" alt="Content at Cell number 11">
+                            {% endwith %}
+                        </div>                
+                    </div>           
+                    
+                    
+                </div>
+            </a>        
+        {% endfor %}
+    </div>
+       
+{% endblock %}  
+
+{% block aside %}
+    {% include 'aside.html' %}
+{% endblock %}

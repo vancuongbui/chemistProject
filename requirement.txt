@@ -1,0 +1,347 @@
+sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+
+# yum -y groupinstall development
+# yum -y install zlib-devel
+# wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz
+# tar xJf Python-3.6.3.tar.xz
+# cd Python-3.6.3
+# ./configure
+# make
+# make install
+pip install django-mathfilters	// for math
+-----------------------------------------------------
+*args: pass a list of any number of arguments to a function, such as function(1,2) or fuction(1,2,3)
+**kwargs: a list of any number of keyword of argument, such as function (keyword1 = 'value1', keyword2 = 'value2')
+	Note: using when there is no need of the number of arguments in a given function.
+
+
+#create environments
+mkdir environments
+cd environments
+python3.6 -m venv my_env
+#activate enviroment
+[cuong.bv@localhost Projects]$ source myEnv/bin/activate
+(myEnv) [cuong.bv@localhost Projects]$ 
+
+#install pip for python36u
+sudo yum install python36u-pip
+
+#after install pip, packages will be installed as following:
+pip install 'package_name'
+
+sudo python -m pip install Django==1.11.7		//sudo python -m pip package==version
+sudo pip3.6 install Django==1.11.7
+or pip install Django==1.11.7 	//for window or python2 on linux
+
+//Install Gulp for simplify Css and JavaScript
+npm install gulp --save-dev	//for linux
+npm install --save-dev gulp-uglify	//javaScript minimizer
+npm install --save-dev gulp-minify-css
+
+//INSTALL BOWER
+//to keep track of js, css file
+npm install bower -g
+using: bower search package_name
+
+
+
+#create project with django
+django-admin manage.py startproject myproject
+#create app
+python manage.py startapp myApp
+#Initiate the database with:
+django-admin manage.py migrage
+#create superuser:
+user: cuongbui
+password: Gaucon@0501
+2. Create "views.py"
+- to create dynamic html content through two step:
+	1. from views.py, create a function to mange the content of the page, such as:
+	          def index(request):
+		contextDict = {'key': "content of the page"}
+		return render(request, 'path', context = contextDict)
+	2. inject content to html file:
+		<p> {{ key }} </p>
+Note: template_name = 'something.html'	//to link to the html file
+
+3. create templates:
+- editing the DIR key
+- make sure the path is correct in settings.py
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+- inset the TEMPLATE_DIR into TEMPLATE
+TEMPLATES = [
+    {        
+        'DIRS': [TEMPLATE_DIR,],
+        ],
+        },
+    },
+]
+- Create templates folder inside the root folder (same level with project and app folder)
+- finally, place html templates there, such as index.html 
+
+4. Static dir
+- create static directory as the same as step 3 for static folder
+	STATIC_DIR = os.path.join(BASE_DIR, "static")
+- mapping to static url:
+	STATIC_URL = '/static/'
+	STATICFILES_DIRS = [
+    		STATIC_DIR,
+		]
+- To include static file in an html file:
+	<!DOCTYPE html>
+	{% load staticfiles %}
+- To insert an html content:
+	{{insertMe}}	//in html file, by insert the key of a dictionary
+	views.py:
+		def index(request):
+    			myDict = {'insertMe': "Hello I am now coming from thirdApp/index.html"}
+    			return render(request, 'thirdApp/index.html', context=myDict)
+- To insert an image:
+	<img src="{% static 'images/django.jpg' %}" alt="cannot load the image">
+- To insert a link, such as css file:
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+5. Models 
+- run migrate each time there is any changes from the models.
+	python manage.py migrate
+	python manage.py makemigrations myApp
+	then, python manage.py migrate again
+Note: make sure the "myApp" was added in "settings.py" at App installed section.
+Note 2: create superuser if not done yet
+	python manage.py createusuperuser
+- Register the models:
+	import classes: from firstApp.models import Topic, ..
+	then register:	admin.site.register(Topic), 
+- Create super User:
+	python manage.py createsuperuser
+
+6. Faker	
+	//to create dumpy data
+- to install: pip install Faker	//from venv environment
+- to import: from faker import Faker
+
+6. form
+
+7. bootstrap
+- Reference: href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+8. Validator:
+- import: 	from django.core import validators
+- validate data format:
+	name = forms.CharField(validators = [validators.Maxlength(20)])
+	last = forms.CharField(validators = [validateFunctionHere])
+9. Relative path:
+- Include urls/path:
+from django.urls import path
+from basicApp import views
+
+app_name = 'basicApp'
+
+urlpatterns = [
+    path('', views.SchoolListView.as_view(), name = 'list'),
+    path('<int:pk>/', views.SchoolDetailView.as_view(), name = 'detail')
+
+- html file: relative path:
+	<a href="{% url 'basicApp:list' %}">Relative page</a>	
+ 	<a href="{% url 'basicApp:detail' %}">Other page</a>
+Note: basicApp is the name of the app, relative is the name of the urls showing above
+
+10. inheritence from template:
+- for base.html
+	% block body_block %}
+        	<!--Anything outside of this will be inherited if you extend -->
+        	{% endblock %}
+- for other page:
+	{% extends "basicApp/base.html" %}
+	{% block body_block %}
+   	 <h1>Welcome to index page</h1>
+     
+	{%endblock%}
+
+11. Filter:
+- need to examine much more
+
+12. User and Authentication:
+- pip install bcrypt
+- pip install django[argon2-cffi]
+- pip install pillow 	//to install library for images
+	Model:	from django.db import models
+		from django.contrib.auth.models import User
+
+#for using login/logout from import
+from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import authenticate, login, logout
+
+//logout function:
+@login_required
+def userLogout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+13. Django Deployment
+- using: pythonanywhere.com
+
+14. Pythonanywhere.com
+user: cuongbui
+
+- Create new project:
+	mkvirtualenv --python==python3.6 myProject
+- pip install -U django==2.0.1
+- git clone: to cp the project into pythonanywhere.com's myProject
+	git clone https://github.com/vancuongbui/...
+
+15. Class View and class TemplateView
+- import: from django.views.generic import View, TemplateView
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['injectMe'] = 'BASIC INJECTION!'
+        return context
+
+16. ListView and DetailView classes
+- import:
+	from django.views.generic import View, TemplateView, ListView, DetailView
+- classes:
+	class SchoolListView(ListView):
+    		model = models.School
+
+	class SchoolDetailView(DetailView):
+    		model = models.School
+    		template_name = 'basicApp/school_detail.html'	//set the path to the html page
+- define object name to make the code more readable 
+	context_object_name = 'myOwnObjectName
+
+- define a related_name in models:
+	school = models.ForeignKey(School, related_name='students', on_delete=models.CASCADE)
+
+17. CRUD: Create, Retrieve, Update and Delete
+18.  CreateView class
+	class SchoolCreateView(CreateView):
+    		fields = ('name', 'principal', 'location')
+    		model = models.School
+Note: reverse url	//go back to the DetailView page after creating a new object
+	from models.py:	define a absolute url function as following:
+			def get_absolute_url(self):
+        				return reverse('basicApp:detail', kwargs={'pk':self.pk})
+or just simple:	return reverse('basicApp:list')	//bring the School_list page in
+
+
+18.1 DetailView
+Note: always name the context_object_name
+	context_object_name = post	//for example of the models.Post
+	the, we can call the 'post' from html file such as: {{post.title}}
+
+18.2 ListView
+	Note: always name the context_object_name
+	context_object_name = post_list		//for example of the models.Post
+	example from html: {% for post in post_list %}
+
+19. UpdateView class
+- The Class in views.py:
+	class SchoolUpdateView(UpdateView):
+    		fields = ('name', 'principal')  #select which fields you'd like to update
+    		model = models.School
+
+Note : the urls.py in basicApp should look like followings:
+urlpatterns = [
+    path('', views.SchoolListView.as_view(), name = 'list'),
+    path('<int:pk>/', views.SchoolDetailView.as_view(), name = 'detail'),
+    path('create/',views.SchoolCreateView.as_view(), name='create'),
+    path('update/<int:pk>',views.SchoolUpdateView.as_view(), name='update'),
+]
+	Note: 	name --> to help html page link to it
+		views.function(): --> to perform the function and load the page
+
+20.  DeleteView class
+- import:	from django.urls import reverse_lazy	//to goback to the list page after completely deleted one
+- class:
+	class SchoolDeleteView(DeleteView):
+    		model = models.School
+    		success_url = reverse_lazy('basicApp:list')
+
+21. Clone project
+
+- https://codepen.io/
+- https://github.com/yabwe/medium-editor
+
+-login icon :
+	<span class="glyphicon glyphicon-user"></span>
+
+
+
+
+
+
+Command Error:
+-Exception Value: type object DetailView has no attribute '_default_manager' in django
+	solution: check the name of the model when call an object, such model = Post
+
+22. Social project
+- settings.py:
+	STATIC_URL = '/static/'
+	STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
+
+	LOGIN_REDIRECT_URL = 'test'	//to navigate to test.html after login successfully
+	LOGOUT_REDIRECT_URL = 'thanks'	//to redirect to thanks.html after logout successfully
+
+- install django-braces
+
+23. Image - upload_to
+- setup MEDIA URL
+	MEDIA_URL = '/media/'
+	MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+from django.db import models
+
+class Car(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    photo = models.ImageField(upload_to='cars')
+
+Example how to access image's attribuites
+>>> car = Car.objects.get(name="57 Chevy")
+>>> car.photo
+<ImageFieldFile: chevy.jpg>
+>>> car.photo.name
+'cars/chevy.jpg'
+>>> car.photo.path
+'/media/cars/chevy.jpg'
+>>> car.photo.url
+'http://media.example.com/cars/chevy.jpg'
+
+
+25. Database
+- Create database
+
+26. Serrialiser: work on it to see what is it
+
+27. Gulp
+gulpfile.js:
+	var gulp = require('
+
+100. Cheat Sheet
+https://docs.djangoproject.com/en/2.0/topics/db/aggregation/
+- Script: should be placed at the root directory to be able to access all the app in easiest way.
+- Generate HTML with escape turn off:  {{ jasonKey|safe }}
+
+
+
+
+
+
+
+
+
+
+

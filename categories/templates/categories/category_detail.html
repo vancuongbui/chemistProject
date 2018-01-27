@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+<!-- Main content start from here-->
+{% block content %}
+    <h1>This is the page displaying products of the same type</h1>
+    <h2>
+        Name: {{category.name|safe}}        
+    </h2>
+    <h2>
+        Slug String: {{category.slug}}        
+    </h2>
+    
+{% endblock %}  
+
+{% block aside %}
+    {% include 'aside.html' %}
+{% endblock %}

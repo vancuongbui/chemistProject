@@ -1,0 +1,21 @@
+
+{% load staticfiles %}
+
+    <div class="row">   
+        {% for imgPath in row1 %}   
+        <span>jj{{imgPath}}</span>        
+            <div class="col-md-6">               
+                
+                <img src="{% static imgPath %}" class="img-responsive center-block" alt="Content at Cell number 11">
+        
+            </div>
+        {% endfor %} 
+        <div id="testReact">
+            <h2>
+                This is the Test of homepage on React, go to <a href=" {% url 'categories:list' %} ">Category for products</a>
+            </h2>
+        </div>  
+        <div>
+            Let see: {{ testGenerateHTML|safe }}
+        </div>
+    </div>  

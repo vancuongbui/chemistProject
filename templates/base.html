@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Star Social</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'chemist/css/main.css' %}">
+    <script src="{% static 'bower_components/react/react.development.js' %}"></script>
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src=" {% static 'chemist/js/indexReact.jsx' %} "></script>
+</head>
+<body>
+    <!-- Link to home page -->
+    
+    <nav class="navbar mynav" role="navigation" id="navbar">        
+        <div class="container-fluid">
+            <a class="navbar-brand mynav" href="{% url 'home' %}">Welcome To Big Deal</a>
+            <ul class="nav navbar-nav navbar-right mynavbar">
+                <li><a href="" class="glyphicon glyphicon-search">Search</a></li>
+                <li><a href=" {% url 'home' %} ">Home Page</a></li>                
+                {% if user.is_authenticated %}                    
+                    <li><a href="{% url 'categories:list' %} ">Categories</a></li>
+                    <li><a href="">Products</a></li>
+                    <li><a href="">Cart</a></li>
+                    <li><a href=" {% url 'logout' %} ">Logout</a></li>
+                    
+                {% else %}
+                    <li><a href="">Products</a></li>
+                    <li><a href="">Cart</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="">Sign Up</a></li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+      
+    </nav>
+    <div class="jumbotron bigdeal">
+        <img id="navImage" class="img-responsive center-block" src=" {% static 'chemist/images/AmazoneNav.jpg' %} " alt="Nav Image">
+    </div>
+    <div class="container mycontent">
+        <div class="row">
+            <div class="col-md-8 two-div container-fluid">
+                {% block content %}  
+                <!-- include content here--> 
+                {% endblock %}  
+            </div>
+            <!-- bootstrap for Aside -->
+            <div class="col-md-4" id="asideBackGroundColor">
+                {% block aside %}
+                <!--include Aside here -->
+                {% endblock %}
+            </div>      
+       
+        
+        </div>        
+        
+    </div>
+    <div class="container-fluid myfooter">  
+        <footer id="footer">
+            <p>References: <a href="chemistwarehouse.com.au">Chemist Warehouse</a> 
+                <a href="https://www.djangoproject.com">Django Ducumentation</a>            
+            </p>
+            <p>Copy right: Cuong Bui</p>    
+        </footer>              
+              
+    </div>  
+</body>
+</html>

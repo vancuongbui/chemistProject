@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+<!-- Main content start from here-->
+{% block content %}  
+<h3>Big discount on following products, minimum 20%</h3>
+    {% for rowEntry in listObjects %}     
+    <div class="row">        
+        {% for eachEntry in rowEntry %}
+            <a href=" {% url 'products:detail' slug=eachEntry.slug %} ">
+                <!-- Note the way to get slug and put in the page -->                
+                <div class="col-md-6">                    
+                    <h3>{{ eachEntry.name|safe }}</h3>                                
+                    <div class="row">                   
+                        <div class="col-sm-6">
+                            <h4>Price: {{eachEntry.currentPrice|safe}}</h4>
+                            <h4>Save: {{eachEntry.savePrice|safe}}</h4> 
+                            <h3>Shop now</h3>                           
+                        </div>
+                        <div class="col-sm-6">                        
+                            {% with 'media/'|add:eachEntry.imagePath.name as imgPath %}                          
+                            <img src="{% static imgPath %}" class="img-responsive center-block" alt="Content at Cell number 11">
+                            {% endwith %}
+                        </div>                
+                    </div>           
+                    
+                    
+                </div>
+            </a>        
+        {% endfor %}
+    </div>
+    {% endfor %}
+       
+{% endblock %}  
+
+{% block aside %}
+    {% include 'aside.html' %}
+{% endblock %}
