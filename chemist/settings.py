@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'webpack_loader',
     'baseApp',
     'accounts',
     'products',
     'categories',
-    'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -126,7 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [STATIC_DIR,]
+STATIC_REACT_DIR = os.path.join(BASE_DIR, 'reactComs')
+STATICFILES_DIRS = [STATIC_DIR, STATIC_REACT_DIR,]
 
 LOGIN_REDIRECT_URL = 'test'
 LOGOUT_REDIRECT_URL = 'thanks'
@@ -135,8 +136,17 @@ LOGOUT_REDIRECT_URL = 'thanks'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATIC_DIR,'media')
 
+
+#Webpack-loader config
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}    
+
 #REST FRAMEWORK SETTINGS
-REST_FRAMEWORK = {
+"""REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
@@ -144,3 +154,4 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     )
 }
+"""
